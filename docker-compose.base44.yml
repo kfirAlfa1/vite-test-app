@@ -1,0 +1,51 @@
+# Base44 development compose for this repo.
+#
+# The app is a frontend-only Vite + React + TypeScript + Tailwind project.
+# It runs FROM SOURCE (no build image): the repo is bind-mounted into a plain
+# node image and Vite's dev server provides hot reload, so edits in the repo
+# show up in the preview immediately.
+#
+#   docker compose -f docker-compose.base44.yml up -d --build
+#
+# Public entry point: host port 3000 -> Vite dev server (config port 8080).
+
+name: base44-vite-react-app
+
+services:
+  web:
+    image: node:22-bookworm
+    working_dir: /app
+    # Dependencies live in a named volume (no lockfile is committed), so they
+    # are installed from the current manifest on every start, then Vite runs.
+    command:
+      - sh
+      - -ec
+      - |
+        npm install --no-audit --no-fund
+        exec npm run dev
+    ports:
+      - "3000:8080"
+    volumes:
+      - ./:/app
+      - web_node_modules:/app/node_modules
+    environment:
+      # Bind mounts on Linux do not always emit inotify events; polling makes
+      # Vite's hot reload reliable.
+      - CHOKIDAR_USEPOLLING=true
+      # Vite >= 6.1 appends this to server.allowedHosts (see vite.config.ts for
+      # the Vite 5 equivalent). Passed through from the sandbox environment.
+      - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
+    healthcheck:
+      # Probe the dev server itself (real HTTP response), not just an open port.
+      test:
+        - CMD-SHELL
+        - >-
+          node -e "require('http').get('http://127.0.0.1:8080/',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 120s
+    restart: on-failure
+
+volumes:
+  web_node_modules:

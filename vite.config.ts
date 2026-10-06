@@ -5,7 +5,10 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    host: "::",
+    // Listen on every interface so the dev server is reachable from outside
+    // the container, and accept the proxied preview hostname.
+    host: true,
+    allowedHosts: true,
     port: 8080,
   },
   plugins: [react()],
