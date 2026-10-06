@@ -18,6 +18,12 @@ const Counter = () => {
       >
         +
       </button>
+      <button
+        onClick={() => setCount(0)}
+        className="ml-2 rounded-lg px-3 py-2 text-sm text-slate-500 hover:bg-slate-100"
+      >
+        Reset
+      </button>
     </div>
   );
 };
