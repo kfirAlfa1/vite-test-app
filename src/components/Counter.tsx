@@ -7,7 +7,7 @@ const Counter = () => {
     <div className="flex items-center gap-4">
       <button
         onClick={() => setCount((c) => c - 1)}
-        className="h-10 w-10 rounded-lg bg-slate-200 text-lg font-semibold hover:bg-slate-300"
+        className="h-10 w-10 rounded-lg bg-blue-500 text-lg font-semibold text-white hover:bg-blue-600"
       >
         −
       </button>
