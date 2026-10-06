@@ -1,15 +1,22 @@
-import Counter from "@/components/Counter";
+import { Card, Heading, Text, Button, Stack } from "@acme-internal/ui-kit";
+import { useCounterStore } from "@/hooks/useCounterStore";
+import type { CounterState } from "@/types/counter";
 
 const App = () => {
+  const { count, increment, decrement, reset }: CounterState = useCounterStore();
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-slate-50 p-6">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-lg">
-        <h1 className="mb-2 text-2xl font-bold text-slate-900">Hello from X</h1>
-        <p className="mb-8 text-slate-500">React + TypeScript + Tailwind, built with Vite.</p>
-        <div className="flex justify-center">
-          <Counter />
-        </div>
-      </div>
+      <Card elevation={2} padding="xl" className="w-full max-w-md text-center">
+        <Heading level={1}>Version 2 (broken)</Heading>
+        <Text tone="muted">React + TypeScript + Tailwind, built with Vite.</Text>
+        <Stack direction="row" gap="md" justify="center">
+          <Button variant="secondary" onClick={decrement}>−</Button>
+          <Text size="3xl" weight="bold">{count}</Text>
+          <Button variant="primary" onClick={increment}>+</Button>
+          <Button variant="ghost" onClick={reset}>Reset
+        </Stack>
+      </Card>
     </main>
   );
 };

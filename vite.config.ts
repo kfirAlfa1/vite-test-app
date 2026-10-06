@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
+import acmeTheme from "@acme-internal/vite-plugin-theme";
 import path from "path";
 
 // https://vitejs.dev/config/
@@ -12,7 +13,7 @@ export default defineConfig({
     // value is an exact-match list and cannot express the wildcard.
     allowedHosts: true,
   },
-  plugins: [react()],
+  plugins: [react(), acmeTheme({ tokens: "./src/styles/tokens.json", mode: "strict" })],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
