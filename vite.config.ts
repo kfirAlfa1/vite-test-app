@@ -7,6 +7,9 @@ export default defineConfig({
   server: {
     host: "::",
     port: 8080,
+    // The preview is proxied through a generated hostname, so Vite's Host
+    // header check must accept it (allow-all).
+    allowedHosts: true,
   },
   plugins: [react()],
   resolve: {
