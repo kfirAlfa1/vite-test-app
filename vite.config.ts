@@ -5,8 +5,12 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    host: "::",
+    host: true,
     port: 8080,
+    // The preview proxy forwards a per-sandbox hostname that rotates, so allow all
+    // hosts (dev server only). The platform's __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
+    // value is an exact-match list and cannot express the wildcard.
+    allowedHosts: true,
   },
   plugins: [react()],
   resolve: {
