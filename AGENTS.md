@@ -10,6 +10,10 @@
 - Host port 3000 maps to container port 8080 (Vite's configured port). The preview
   entry point is always host port 3000.
 - There is no lockfile in the repo, so `npm install` (not `npm ci`) is used.
+- The dev command execs `./node_modules/.bin/vite` directly rather than `npm run dev`.
+  Going through the npm wrapper made every container restart print `npm error signal
+  SIGTERM` (npm forwards the signal to vite and reports it as a failure), which reads
+  as a service error. Do not reintroduce `npm run dev` in the command.
 
 ## Notes / gotchas
 
